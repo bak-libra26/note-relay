@@ -1,14 +1,20 @@
 {
 	"name": "obsidian-auto-push-sync-plugin",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Automatically push and sync your Obsidian vault with a remote backend, keeping your notes synchronized with a remote database.",
-	"main": "main.js",
+	"main": "./src/main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
 	},
-	"keywords": ["obsidian", "plugin", "sync", "database", "backend"],
+	"keywords": [
+		"obsidian",
+		"plugin",
+		"sync",
+		"database",
+		"backend"
+	],
 	"author": "bak-libra26",
 	"license": "MIT",
 	"devDependencies": {
@@ -20,5 +26,9 @@
 		"obsidian": "latest",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
+	},
+	"dependencies": {
+		"minimatch": "^10.0.3",
+		"uuid": "^11.1.0"
 	}
 }

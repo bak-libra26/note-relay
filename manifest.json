@@ -1,8 +1,8 @@
 {
 	"id": "auto-push-sync-plugin",
-	"name": "Auto Push Sync Plugin",
-	"version": "0.1.0",
-	"minAppVersion": "0.0.1",
+	"name": "Auto Push Sync",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
 	"description": "Automatically push and sync your Obsidian vault with a remote backend server, keeping your notes synchronized with a remote database.",
 	"author": "bak-libra26",
 	"authorUrl": "https://github.com/bak-libra26",
