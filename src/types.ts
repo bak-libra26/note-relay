@@ -1,41 +1,54 @@
 // types.ts
 
-export interface AutoPushSyncSettings {
+/**
+ * The default field name used for note unique identifiers in frontmatter.
+ */
+export const DEFAULT_NOTE_ID_FIELD_NAME = "file_id";
+
+/**
+ * Supported authentication types for server sync.
+ */
+export const AUTH_TYPE = {
+	NONE: "none",
+	BASIC: "basic",
+	TOKEN: "token"
+} as const;
+
+export type AuthType = typeof AUTH_TYPE[keyof typeof AUTH_TYPE];
+
+/**
+ * Settings interface for NoteRelay plugin.
+ */
+export interface NoteRelaySettings {
 	server_url: string;
 	sync_endpoint: string;
-	sync_password: string;
-	enable_file_id: boolean;
-	file_id_field_name: string;
-	file_name_field_name: string;
-	file_content_field_name: string;
-	exclude_patterns?: string[]; // 예외 패턴 (glob, 경로, 파일명 등)
+	note_id_field_name: string;
+	exclude_patterns: string[]; // Glob patterns for files/folders to exclude from sync
 	auto_sync_on_modify: boolean;
-	include_front_matter_in_content: boolean;
-	send_file_content: boolean;
 
-	// 인증 관련 필드 추가
-	auth_type?: "none" | "basic" | "token";
+	// Authentication fields
+	auth_type: AuthType;
 	basic_username?: string;
 	basic_password?: string;
 	auth_token?: string;
+
+	// If true, update note ID in frontmatter from server response after upload
+	overwrite_file_id_from_response: boolean;
 }
 
-export const DEFAULT_SETTINGS: AutoPushSyncSettings = {
-	server_url: '',
-	sync_endpoint: '',
-	sync_password: '',
-	enable_file_id: false,
-	file_id_field_name: 'file_id',
-	file_name_field_name: 'file_name',
-	file_content_field_name: 'content',
+/**
+ * Default settings for NoteRelay plugin.
+ */
+export const DEFAULT_SETTINGS: NoteRelaySettings = {
+	server_url: "",
+	sync_endpoint: "",
+	note_id_field_name: DEFAULT_NOTE_ID_FIELD_NAME,
 	exclude_patterns: [],
 	auto_sync_on_modify: false,
-	include_front_matter_in_content: false,
-	send_file_content: true,
 
-	// 인증 관련 기본값 추가
-	auth_type: "none",
-	basic_username: '',
-	basic_password: '',
-	auth_token: '',
+	auth_type: AUTH_TYPE.NONE,
+	basic_username: "",
+	basic_password: "",
+	auth_token: "",
+	overwrite_file_id_from_response: false
 };

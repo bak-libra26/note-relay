@@ -1,9 +1,9 @@
 {
-	"id": "auto-push-sync-plugin",
-	"name": "Auto Push Sync",
+	"id": "note-relay",
+	"name": "Note Relay",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Automatically push and sync your Obsidian vault with a remote backend server, keeping your notes synchronized with a remote database.",
+	"description": "A robust Obsidian plugin for automatically and securely syncing your notes with a remote server, featuring flexible authentication, metadata management, and customizable sync options.",
 	"author": "bak-libra26",
 	"authorUrl": "https://github.com/bak-libra26",
 	"fundingUrl": "",
