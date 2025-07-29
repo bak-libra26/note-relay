@@ -1,6 +1,6 @@
 {
-	"id": "Note Relay",
-	"name": "Note Relay",
+	"id": "note-relay",
+	"name": "note-relay",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Automatically syncs your notes to a remote server with flexible authentication and metadata management.",

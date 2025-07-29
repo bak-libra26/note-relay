@@ -1,5 +1,5 @@
 {
-	"name": "Note Relay",
+	"name": "note-relay",
 	"version": "1.0.0",
 	"description": "Automatically syncs your notes to a remote server with flexible authentication and metadata management.",
 	"main": "./src/main.js",
