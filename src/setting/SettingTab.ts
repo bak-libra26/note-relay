@@ -4,11 +4,7 @@ import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import NoteRelayPlugin from "../main";
 import { AUTH_TYPE, AuthType } from "../constants";
 
-/**
- * Plugin settings tab for NoteRelay.
- * Provides UI for configuring server sync, authentication, exclusions, and note metadata.
- */
-export class NoteRelaySettingTab extends PluginSettingTab {
+export class SettingTab extends PluginSettingTab {
 	plugin: NoteRelayPlugin;
 
 	constructor(app: App, plugin: NoteRelayPlugin) {
@@ -20,14 +16,13 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		// --- Server Sync Settings ---
-		containerEl.createEl("h3", { text: "Server Sync Settings" });
+		new Setting(containerEl)
+			.setName("Server sync")
+			.setHeading();
 
-		const serverSection = containerEl.createDiv({ cls: "setting-indent" });
-
-		new Setting(serverSection)
+		new Setting(containerEl)
 			.setName("Server URL")
-			.setDesc("e.g., http://localhost:8080")
+			.setDesc("For example: http://localhost:8080")
 			.addText(text =>
 				text
 					.setPlaceholder("http://localhost:8080")
@@ -38,9 +33,9 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 					})
 			);
 
-		new Setting(serverSection)
-			.setName("Sync Endpoint")
-			.setDesc("e.g., /v1/post/sync")
+		new Setting(containerEl)
+			.setName("Sync endpoint")
+			.setDesc("For example: /v1/post/sync")
 			.addText(text =>
 				text
 					.setPlaceholder("/v1/post/sync")
@@ -51,30 +46,26 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 					})
 			);
 
-		// --- Authentication Settings ---
-		new Setting(serverSection)
-			.setName("Authentication Type")
+		new Setting(containerEl)
+			.setName("Authentication type")
 			.setDesc("Select the authentication method for your server.")
 			.addDropdown(dropdown => {
 				dropdown
 					.addOption(AUTH_TYPE.NONE, "None")
-					.addOption(AUTH_TYPE.BASIC, "Basic Auth")
+					.addOption(AUTH_TYPE.BASIC, "Basic auth")
 					.addOption(AUTH_TYPE.TOKEN, "Token")
 					.setValue(this.plugin.settings.auth_type || AUTH_TYPE.NONE)
 					.onChange(async (value: AuthType) => {
 						this.plugin.settings.auth_type = value;
 						await this.plugin.saveSettings();
-						this.display(); // Refresh UI on auth type change
+						this.display();
 					});
 			});
 
-		// Show authentication fields based on selected type
-		const authSection = serverSection.createDiv({ cls: "setting-indent" });
-
 		if (this.plugin.settings.auth_type === AUTH_TYPE.BASIC) {
-			new Setting(authSection)
-				.setName("Basic Username")
-				.setDesc("Enter the username for Basic authentication.")
+			new Setting(containerEl)
+				.setName("Basic username")
+				.setDesc("Enter the username for basic authentication.")
 				.addText(text =>
 					text
 						.setPlaceholder("Username")
@@ -85,39 +76,41 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 						})
 				);
 
-			new Setting(authSection)
-				.setName("Basic Password")
-				.setDesc("Enter the password for Basic authentication.")
-				.addText(text =>
+			new Setting(containerEl)
+				.setName("Basic password")
+				.setDesc("Enter the password for basic authentication.")
+				.addText(text => {
 					text
 						.setPlaceholder("Password")
 						.setValue(this.plugin.settings.basic_password || "")
 						.onChange(async value => {
 							this.plugin.settings.basic_password = value;
 							await this.plugin.saveSettings();
-						})
-				);
+						});
+					text.inputEl.type = "password";
+				});
 		} else if (this.plugin.settings.auth_type === AUTH_TYPE.TOKEN) {
-			new Setting(authSection)
-				.setName("Auth Token")
+			new Setting(containerEl)
+				.setName("Auth token")
 				.setDesc("Enter the token for server authentication.")
-				.addText(text =>
+				.addText(text => {
 					text
 						.setPlaceholder("Token")
 						.setValue(this.plugin.settings.auth_token || "")
 						.onChange(async value => {
 							this.plugin.settings.auth_token = value;
 							await this.plugin.saveSettings();
-						})
-				);
+						});
+					text.inputEl.type = "password";
+				});
 		}
 
-		// --- Auto Sync Settings ---
-		containerEl.createEl("h3", { text: "Auto Sync" });
+		new Setting(containerEl)
+			.setName("Auto sync")
+			.setHeading();
 
-		const autoSyncSection = containerEl.createDiv({ cls: "setting-indent" });
-		new Setting(autoSyncSection)
-			.setName("Auto Sync on Note Change")
+		new Setting(containerEl)
+			.setName("Auto sync on note change")
 			.setDesc("Automatically upload notes to the server when modified.")
 			.addToggle(toggle =>
 				toggle
@@ -129,14 +122,16 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 					})
 			);
 
-		// --- Exclusion Patterns ---
-		const excludeSection = containerEl.createDiv({ cls: "setting-indent" });
-		new Setting(excludeSection)
-			.setName("Exclude Notes/Folders")
-			.setDesc("Comma-separated patterns. e.g., templates/**, *.bak, assets/*.png")
+		new Setting(containerEl)
+			.setName("Exclusions")
+			.setHeading();
+
+		new Setting(containerEl)
+			.setName("Exclude notes or folders")
+			.setDesc("Comma-separated patterns. For example: templates/**, *.bak, assets/*.png")
 			.addTextArea(text =>
 				text
-					.setPlaceholder("e.g., templates/**, *.bak, assets/*.png")
+					.setPlaceholder("templates/**, *.bak, assets/*.png")
 					.setValue((this.plugin.settings.exclude_patterns ?? []).join(", "))
 					.onChange(async value => {
 						this.plugin.settings.exclude_patterns = value
@@ -147,20 +142,20 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 					})
 			);
 
-		// --- Note Metadata Settings ---
-		containerEl.createEl("h3", { text: "Note Metadata" });
+		new Setting(containerEl)
+			.setName("Note metadata")
+			.setHeading();
 
-		const idSection = containerEl.createDiv({ cls: "setting-indent" });
-		idSection.createEl("h3", { text: "Identifier Settings" });
+		new Setting(containerEl)
+			.setName("Identifier")
+			.setHeading();
 
-		const indentDiv = idSection.createDiv({ cls: "setting-indent" });
-
-		new Setting(indentDiv)
-			.setName("Note Identifier Field Name")
-			.setDesc("This field stores the UUID used as the unique identifier for the note. (e.g., note_id, uuid)")
+		new Setting(containerEl)
+			.setName("Note identifier field name")
+			.setDesc("This field stores the UUID used as the unique identifier for the note. For example: note_id, uuid")
 			.addText(text => {
 				text
-					.setPlaceholder("e.g., note_id")
+					.setPlaceholder("note_id")
 					.setValue(this.plugin.settings.note_id_field_name)
 					.onChange(async value => {
 						const trimmed = value.trim().toLowerCase();
@@ -180,15 +175,15 @@ export class NoteRelaySettingTab extends PluginSettingTab {
 						const defaultValue = "note_id";
 						this.plugin.settings.note_id_field_name = defaultValue;
 						await this.plugin.saveSettings();
-						const input = indentDiv.querySelector("input");
+						const input = (btn.extraSettingsEl.parentElement?.querySelector("input")) as HTMLInputElement | null;
 						if (input) input.value = defaultValue;
 						new Notice("Reset to default value.");
 					});
 			});
 
 		new Setting(containerEl)
-			.setName("Auto-update Note Identifier from Server Response")
-			.setDesc("If the server response contains a note identifier (e.g., UUID) after upload, automatically update the note's frontmatter identifier field with that value.")
+			.setName("Auto-update note identifier from server response")
+			.setDesc("If the server response contains a note identifier (for example, UUID) after upload, automatically update the note's frontmatter identifier field with that value.")
 			.addToggle(toggle =>
 				toggle
 					.setValue(this.plugin.settings.overwrite_file_id_from_response ?? false)

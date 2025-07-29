@@ -100,7 +100,6 @@ export class HttpUtil {
 		formData: FormData,
 		headers: Record<string, string>
 	): Promise<Response> {
-		// Note: fetch will automatically set the correct Content-Type for FormData
 		return fetch(url, {
 			method: "POST",
 			headers,

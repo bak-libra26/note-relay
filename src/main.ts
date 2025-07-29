@@ -1,7 +1,7 @@
 // main.ts
 
 import { Plugin } from "obsidian";
-import { NoteRelaySettingTab } from "./setting/SettingTab";
+import { SettingTab } from "./setting/SettingTab";
 import { DEFAULT_SETTINGS, NoteRelaySettings } from "./types";
 import { NoteRelayCommandHandler } from "./handler/NoteRelayCommandHandler";
 
@@ -20,7 +20,7 @@ export default class NoteRelayPlugin extends Plugin {
 		this.commandHandler.registerCommands();
 		this.commandHandler.registerFileChangeListener();
 
-		this.addSettingTab(new NoteRelaySettingTab(this.app, this));
+		this.addSettingTab(new SettingTab(this.app, this));
 	}
 
 	/**

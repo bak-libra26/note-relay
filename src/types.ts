@@ -23,7 +23,7 @@ export interface NoteRelaySettings {
 	server_url: string;
 	sync_endpoint: string;
 	note_id_field_name: string;
-	exclude_patterns: string[]; // Glob patterns for files/folders to exclude from sync
+	exclude_patterns: string[];
 	auto_sync_on_modify: boolean;
 
 	// Authentication fields
@@ -32,7 +32,6 @@ export interface NoteRelaySettings {
 	basic_password?: string;
 	auth_token?: string;
 
-	// If true, update note ID in frontmatter from server response after upload
 	overwrite_file_id_from_response: boolean;
 }
 

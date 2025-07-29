@@ -7,10 +7,6 @@ import * as yaml from "js-yaml";
 import { minimatch } from "minimatch";
 import { NoteRelaySettings } from "../types";
 
-/**
- * Utility class for handling note relay operations:
- * frontmatter parsing/assembly, file exclusion, server sync, etc.
- */
 export class NoteRelayUtil {
 	private plugin: Plugin & { settings: NoteRelaySettings };
 
@@ -19,7 +15,7 @@ export class NoteRelayUtil {
 	}
 
 	/**
-	 * Main entry point: Uploads a note to the remote server and, if configured,
+	 * Uploads a note to the remote server and, if configured,
 	 * updates the note's identifier in the frontmatter based on the server response.
 	 * @param file The note file to relay.
 	 */
@@ -41,11 +37,9 @@ export class NoteRelayUtil {
 			return;
 		}
 
-		// 1. Get or create the note's unique identifier from frontmatter
 		const fileId = await this.getOrCreateFileId(file, note_id_field_name ?? "note_id");
 		const url = HttpUtil.buildRelayUrl(server_url, sync_endpoint, fileId);
 
-		// 2. Prepare headers and form data for upload
 		const headers = HttpUtil.getHeaders({
 			auth_type: auth_type ?? "none",
 			basic_username,
@@ -53,11 +47,9 @@ export class NoteRelayUtil {
 			auth_token
 		});
 
-		// 3. Read file as binary and create form data
 		const fileArrayBuffer = await this.plugin.app.vault.readBinary(file);
 		const formData = HttpUtil.createFileFormData(fileArrayBuffer, file.name);
 
-		// 4. Upload file and handle server response
 		const response = await HttpUtil.uploadFile(url, formData, headers);
 
 		if (overwrite_file_id_from_response) {
@@ -102,10 +94,7 @@ export class NoteRelayUtil {
 	async setFileId(file: TFile, fieldName: string, value: string): Promise<void> {
 		const content = await this.plugin.app.vault.read(file);
 		const { fields, body } = NoteRelayUtil.parseFrontmatter(content);
-
-		// Do not overwrite if the field already exists
 		if (fields[fieldName]) return;
-
 		fields[fieldName] = value;
 		const newContent = NoteRelayUtil.buildFrontmatter(fields, body);
 		await this.plugin.app.vault.modify(file, newContent);
@@ -138,7 +127,6 @@ export class NoteRelayUtil {
 			!response.headers.get("content-type")?.includes("application/json")
 		) return;
 
-		// Get the current file ID from frontmatter
 		const frontmatter = this.getFrontmatter(file);
 		const currentFileId = frontmatter?.[file_id_field_name] ?? "";
 
