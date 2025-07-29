@@ -1,9 +1,9 @@
 {
-	"id": "note-relay",
+	"id": "Note Relay",
 	"name": "Note Relay",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "A robust Obsidian plugin for automatically and securely syncing your notes with a remote server, featuring flexible authentication, metadata management, and customizable sync options.",
+	"description": "Automatically syncs your notes to a remote server with flexible authentication and metadata management.",
 	"author": "bak-libra26",
 	"authorUrl": "https://github.com/bak-libra26",
 	"fundingUrl": "",
