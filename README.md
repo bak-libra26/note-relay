@@ -32,4 +32,4 @@ Contributions, bug reports, and feature requests are welcome!
 MIT License
 
 **Support:**  
-Contributions and feedback are welcome!
+For questions or help, please open an issue or discussion on GitHub.
