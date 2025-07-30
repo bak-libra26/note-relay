@@ -1,4 +1,4 @@
-# NoteRelay Obsidian Plugin
+# NoteRelay Obsidian Community Plugin
 
 **NoteRelay** is an unofficial, community-developed plugin for Obsidian that syncs your notes with a remote server. Configure your server and authentication settings, and your notes will automatically upload when modified.
 
