@@ -26,14 +26,14 @@ export class NoteRelayCommandHandler {
 			id: "sync-file-uuid",
 			name: "Sync file identifier (UUID) with server and display",
 			callback: this.relayActiveNote.bind(this),
-			hotkeys: [{ modifiers: ["Mod", "Shift"], key: "U" }],
+			hotkeys: [{ modifiers: ["Mod", "Shift", "Alt"], key: "U" }], // 추천: Mod+Shift+Alt+U
 		});
 
 		this.plugin.addCommand({
 			id: "generate-file-uuid",
 			name: "Generate UUID for current file",
 			callback: this.generateUuid.bind(this),
-			hotkeys: [{ modifiers: ["Mod", "Shift"], key: "C" }],
+			hotkeys: [{ modifiers: ["Mod", "Shift", "Alt"], key: "G" }], // 추천: Mod+Shift+Alt+G
 		});
 	}
 
